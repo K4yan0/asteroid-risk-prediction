@@ -207,7 +207,8 @@ marimo/_lsp/
 __marimo__/
 
 # Block the data/* to have data on github
-data/*
+data/*.csv
+data/**/*.csv
 !data/.gitkeep
 !data/*/.gitkeep
 !data/README.md
