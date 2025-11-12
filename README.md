@@ -1,115 +1,130 @@
-# 🚀 Astro-Classifier RF : Classification d'Astéroïdes Potentiellement Dangereux
+# 🚀 Astro-Classifier RF: Potentially Hazardous Asteroid Classification
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
-![Libraries](https://img.shields.io/badge/Bibliothèques-Pandas_|_Scikit--learn_|_Seaborn-orange)
+![Libraries](https://img.shields.io/badge/Libraries-Pandas_|_Scikit--learn_|_Seaborn-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-Ce projet utilise un modèle de Machine Learning **Random Forest** pour classifier les astéroïdes comme "Potentiellement Dangereux" (Potentially Hazardous Asteroid - PHA) ou non, en se basant sur leurs données orbitales et physiques extraites de la base de données JPL de la NASA.
+This project uses a **Random Forest** Machine Learning model to classify asteroids as "Potentially Hazardous" (PHA) or not, based on their orbital and physical data from the NASA JPL database.
 
 ---
 
-## 🎯 Objectif et Découverte Scientifique
+## 🎯 Objective and Scientific Discovery
 
-Le but de ce projet était triple :
-1.  **IA :** Mettre en œuvre un modèle `RandomForestClassifier` de Scikit-learn sur un problème de classification concret.
-2.  **Portfolio :** Construire un projet de data science de A à Z en suivant les meilleures pratiques (GitFlow, architecture de dossiers, notebooks séparés).
-3.  **Science :** Non seulement prédire le statut PHA, mais aussi **confirmer scientifiquement** quelles caractéristiques sont les plus déterminantes pour définir un astéroïde comme "dangereux".
+The goal of this project was threefold:
+1.  **AI:** Implement a Scikit-learn `RandomForestClassifier` on a real-world classification problem.
+2.  **Portfolio:** Build an end-to-end data science project following best practices (GitFlow, directory structure, separate notebooks).
+3.  **Science:** Not only predict PHA status but also **understand what defines the risk**.
 
-### 1. Performance du Modèle : Précision de 99.86%
+### 1. Model Performance: 99.86% Accuracy
 
-Le modèle final, entraîné sur 80% des données et testé sur 20% de données inconnues, atteint une précision globale de 99.86%.
+The final model, trained on 80% of the data and tested on 20% of unseen data, achieved an overall accuracy of 99.86%.
 
-La métrique la plus importante est le **Rappel (Recall)** pour les PHA : **notre modèle a réussi à identifier 98.8% de toutes les menaces réelles (497 sur 503)** dans l'ensemble de test, avec un nombre de fausses alertes (5) et de menaces manquées (6) extrêmement faible.
+The most critical metric is the **Recall** for PHAs: **our model successfully identified 98.8% of all real threats (497 out of 503)** in the test set, with an extremely low number of false alarms (5) and missed threats (6).
 
-![Matrice de Confusion](results/figures/04_confusion_matrix.png)
+![Confusion Matrix](results/figures/04_confusion_matrix.png)
 
-### 2. La Découverte : Le Modèle a "Redécouvert" la Science
+### 2. The Discovery: The Model "Rediscovered" Risk
 
-L'objectif scientifique a été atteint. En demandant au modèle quelles caractéristiques il a jugées les plus importantes pour prendre sa décision, il a **confirmé de manière autonome la définition officielle d'un PHA**.
+The scientific objective was successfully met. By asking the model which features it found most important, it **autonomously confirmed the astrophysical definition of risk.**
 
-Le modèle a identifié `H` (la magnitude, liée à la **taille**) et `moid` (la distance orbitale minimale, liée à la **proximité**) comme étant les deux facteurs prédictifs les plus importants, loin devant tous les autres paramètres orbitaux.
+The model identified that "danger" is a combination of two primary factors:
+1.  **`H` (Magnitude/Size):** The most important factor by a large margin. The model learned that the object's size is the main indicator of risk.
+2.  **`moid` (Proximity):** The second-most important factor. The model learned that the minimum orbital intersection distance with Earth is the other key indicator.
 
-![Importance des Caractéristiques](results/figures/05_feature_importance.png)
+The model didn't just learn to *classify*; it learned to *evaluate risk* based on **Size** and **Proximity**.
+
+![Feature Importance](results/figures/05_feature_importance.png)
 
 ---
 
-## 💻 Installation et Utilisation
+## 💻 Installation and Usage
 
-Ce projet utilise `Python 3.10` et un environnement virtuel est recommandé.
+This project uses `Python 3.10`, and a virtual environment is recommended.
 
-1.  **Cloner le dépôt :**
+1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/](https://github.com/)[TON_NOM_UTILISATEUR]/[TON_NOM_DE_PROJET].git
-    cd [TON_NOM_DE_PROJET]
+    git clone [https://github.com/](https://github.com/)[YOUR_USERNAME]/[YOUR_PROJECT_NAME].git
+    cd [YOUR_PROJECT_NAME]
     ```
 
-2.  **Créer un environnement virtuel et l'activer :**
+2.  **Create and activate a virtual environment:**
     ```bash
     python -m venv venv
-    source venv/bin/activate  # Sur Windows: .\venv\Scripts\activate
+    source venv/bin/activate  # On Windows: .\venv\Scripts\activate
     ```
 
-3.  **Installer les dépendances :**
+3.  **Install dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
 
+### 🚀 Model Usage (Inputs)
+
+The trained model (`rf_pha_classifier.joblib`) is ready to make predictions. To use it (via a script, API, or the `app.py` Streamlit app), you must provide the following **6 features**:
+
+* **`H`** (Absolute Magnitude): *Proxy for the object's size.*
+* **`e`** (Eccentricity): *The shape of the orbit (0=perfect circle).*
+* **`a`** (Semi-Major Axis): *The average size of the orbit.*
+* **`q`** (Perihelion Distance): *The orbit's closest point to the Sun.*
+* **`i`** (Inclination): *The orbit's angle relative to Earth's orbit.*
+* **`moid`** (Earth MOID): *The minimum distance between the object's orbit and Earth's orbit.*
+
 ---
 
-## 📖 Processus (Les Notebooks)
+## 📖 Process (The Notebooks)
 
-Le projet est divisé en trois notebooks séquentiels situés dans le dossier `/notebooks/` :
+The project is divided into three sequential notebooks located in the `/notebooks/` directory:
 
 * **`01_Data_Acquisition_and_Cleaning.ipynb`**
-    * Interroge la base de données JPL Small-Body de la NASA.
-    * Filtre pour obtenir tous les Objets Proches de la Terre (NEOs).
-    * Nettoie les données : gère les valeurs `NaN` et convertit la cible `pha` en format binaire (0/1).
-    * Sauvegarde un fichier `asteroids_cleaned.csv` propre.
+    * Queries the NASA JPL Small-Body Database.
+    * Filters to get all Near-Earth Objects (NEOs).
+    * Cleans the data: handles `NaN` values and converts the `pha` target to binary (0/1).
+    * Saves a clean `asteroids_cleaned.csv` file.
 
 * **`02_Exploratory_Data_Analysis.ipynb`**
-    * Analyse le déséquilibre des classes (la grande majorité des objets sont non-dangereux).
-    * Visualise les distributions des caractéristiques (`H`, `moid`, etc.).
-    * Génère une matrice de corrélation pour identifier les relations entre les variables.
+    * Analyzes the class imbalance (the vast majority of objects are non-hazardous).
+    * Visualizes feature distributions (`H`, `moid`, etc.).
+    * Generates a correlation matrix to identify relationships between variables.
 
 * **`03_Model_Training_and_Evaluation.ipynb`**
-    * Divise les données en ensembles d'entraînement (80%) et de test (20%).
-    * Entraîne un `RandomForestClassifier` en utilisant `class_weight='balanced'` pour gérer le déséquilibre.
-    * Évalue le modèle, génère la matrice de confusion et le rapport de classification.
-    * Extrait et trace l'importance des caractéristiques.
-    * Sauvegarde le modèle final entraîné dans `/results/models/`.
+    * Splits the data into training (80%) and testing (20%) sets.
+    * Trains a `RandomForestClassifier` using `class_weight='balanced'` to handle the imbalance.
+    * Evaluates the model, generating the confusion matrix and classification report.
+    * Extracts and plots feature importances.
+    * Saves the final trained model to `/results/models/`.
 
 ---
 
-## 🗂️ Structure du Dépôt
-astro-classifier-rf/
-├── .gitignore
-├── LICENSE
-├── README.md
-├── requirements.txt
+## 🗂️ Repository Structure
+📁 astro-classifier-rf/
+├── 📄 .gitignore
+├── 📄 LICENSE
+├── 📄 README.md
+├── 📄 requirements.txt
 │
-├── data/
-│   ├── raw/
-│   │   └── .gitkeep        (Les données brutes sont ignorées par .gitignore)
-│   └── processed/
-│       └── .gitkeep        (Les données nettoyées sont ignorées par .gitignore)
+├── 📁 data/
+│ ├── 📁 raw/
+│ │ └── 📄 .gitkeep
+│ └── 📁 processed/
+│ └── 📄 .gitkeep
 │
-├── notebooks/
-│   ├── 01_Data_Acquisition_and_Cleaning.ipynb
-│   ├── 02_Exploratory_Data_Analysis.ipynb
-│   └── 03_Model_Training_and_Evaluation.ipynb
+├── 📁 notebooks/
+│ ├── 📄 01_Data_Acquisition_and_Cleaning.ipynb
+│ ├── 📄 02_Exploratory_Data_Analysis.ipynb
+│ └── 📄 03_Model_Training_and_Evaluation.ipynb
 │
-└── results/
-    ├── figures/
-    │   ├── 01_class_distribution.png
-    │   ├── 02_h_moid_distributions.png
-    │   ├── 03_correlation_heatmap.png
-    │   ├── 04_confusion_matrix.png
-    │   └── 05_feature_importance.png
-    └── models/
-        └── rf_pha_classifier.joblib
+└── 📁 results/
+  ├── 📁 figures/
+  │ ├── 📄 01_class_distribution.png
+  │ ├── 📄 02_h_moid_distributions.png
+  │ ├── 📄 03_correlation_heatmap.png
+  │ ├── 📄 04_confusion_matrix.png
+  │ └── 📄 05_feature_importance.png
+  └── 📁 models/
+    └── 📄 rf_pha_classifier.joblib
 
 ---
 
-## 📄 Licence
+## 📄 License
 
-Ce projet est publié sous la licence MIT.
+This project is released under the MIT License.
