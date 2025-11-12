@@ -96,8 +96,7 @@ The project is divided into three sequential notebooks located in the `/notebook
 ---
 
 ## 🗂️ Repository Structure
-## 📁 Repository Structure
-
+```bash
 astro-classifier-rf/
 |
 +-- .gitignore
@@ -125,7 +124,7 @@ astro-classifier-rf/
     |   \-- 05_feature_importance.png
     \-- models/
         \-- rf_pha_classifier.joblib
-
+```
 ---
 
 ## 📄 License
