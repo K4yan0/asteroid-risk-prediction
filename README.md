@@ -98,18 +98,15 @@ astro-classifier-rf/
 │   ├── 02_Exploratory_Data_Analysis.ipynb
 │   └── 03_Model_Training_and_Evaluation.ipynb
 │
-├── results/
-│   ├── figures/
-│   │   ├── 01_class_distribution.png
-│   │   ├── 02_h_moid_distributions.png
-│   │   ├── 03_correlation_heatmap.png
-│   │   ├── 04_confusion_matrix.png
-│   │   └── 05_feature_importance.png
-│   └── models/
-│       └── rf_pha_classifier.joblib
-│
-└── src/
-└── .gitkeep
+└── results/
+    ├── figures/
+    │   ├── 01_class_distribution.png
+    │   ├── 02_h_moid_distributions.png
+    │   ├── 03_correlation_heatmap.png
+    │   ├── 04_confusion_matrix.png
+    │   └── 05_feature_importance.png
+    └── models/
+        └── rf_pha_classifier.joblib
 
 ---
 
