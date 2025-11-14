@@ -208,6 +208,7 @@ __marimo__/
 
 # Block the data/* to have data on github
 data/*.csv
+data/processed/asteroids_cleaned.csv
 data/**/*.csv
 !data/.gitkeep
 !data/*/.gitkeep
