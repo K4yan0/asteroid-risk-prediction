@@ -15,6 +15,9 @@ st.set_page_config(
 MODEL_PATH = 'results/models/rf_pha_classifier.joblib'
 CNEOS_API_URL = "https://ssd-api.jpl.nasa.gov/cad.api"
 
+
+# --- Helper Functions ---
+
 @st.cache_data
 def load_model(path):
     """Loads the pre-trained RF model."""
@@ -35,7 +38,7 @@ def fetch_close_approaches():
         params = {
             'date-min': 'now',
             'date-max': '+60',
-            'dist-max': '0.05', # PHA limit: < 0.05 AU
+            'dist-max': '0.05',
             'sort': 'date'
         }
         response = requests.get(CNEOS_API_URL, params=params)
@@ -44,7 +47,7 @@ def fetch_close_approaches():
         data = response.json()
 
         if data['count'] == '0':
-            return pd.DataFrame(columns=['Object', 'Close-Approach Date', 'Distance (km)', 'Lunar Dist.', 'Size (m)'])
+            return pd.DataFrame(columns=['Object', 'Close-Approach Date', 'Distance (km)', 'Lunar Dist.', 'Size (m)', 'datetime'])
 
         df = pd.DataFrame(data['data'], columns=data['fields'])
 
@@ -54,18 +57,17 @@ def fetch_close_approaches():
         df_cleaned['H'] = pd.to_numeric(df_cleaned['H'])
         df_cleaned['Distance (AU)'] = pd.to_numeric(df_cleaned['Distance (AU)'])
 
-        # Estimate size from H (magnitude)
         df_cleaned['Size (m)'] = 10**( (27.8 - df_cleaned['H']) / 5 )
 
-        # Convert distances
         AU_TO_KM = 149597870.7
-        AU_TO_LD = 389.0 # Lunar Distance
+        AU_TO_LD = 389.0
         df_cleaned['Distance (km)'] = (df_cleaned['Distance (AU)'] * AU_TO_KM).round(0)
         df_cleaned['Lunar Dist.'] = (df_cleaned['Distance (AU)'] * AU_TO_LD).round(1)
 
-        df_cleaned['Close-Approach Date'] = pd.to_datetime(df_cleaned['Close-Approach Date']).dt.strftime('%Y-%m-%d %H:%M')
+        df_cleaned['datetime'] = pd.to_datetime(df_cleaned['Close-Approach Date'])
+        df_cleaned['Close-Approach Date'] = df_cleaned['datetime'].dt.strftime('%Y-%m-%d %H:%M')
 
-        df_final = df_cleaned[['Object', 'Close-Approach Date', 'Distance (km)', 'Lunar Dist.', 'Size (m)']].sort_values(by='Close-Approach Date')
+        df_final = df_cleaned[['Object', 'Close-Approach Date', 'Distance (km)', 'Lunar Dist.', 'Size (m)', 'datetime']].sort_values(by='datetime')
         return df_final
 
     except requests.exceptions.RequestException as e:
