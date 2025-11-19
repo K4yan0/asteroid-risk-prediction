@@ -1,10 +1,53 @@
 # 🚀 Astro-Classifier RF: Potentially Hazardous Asteroid Classification
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
-![Libraries](https://img.shields.io/badge/Libraries-Pandas_|_Scikit--learn_|_Seaborn-orange)
+![Stack](https://img.shields.io/badge/Stack-Streamlit_|_Pandas_|_Scikit--learn_|_Plotly-orange)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-This project uses a **Random Forest** Machine Learning model to classify asteroids as "Potentially Hazardous" (PHA) or not, based on their orbital and physical data from the NASA JPL database.
+This project uses a **Random Forest** Machine Learning model to classify asteroids as "Potentially Hazardous" (PHA) or not, based on orbital and physical data from the NASA JPL database.
+
+The project includes a full data science workflow (acquisition, cleaning, EDA, training) and an **interactive Streamlit web application** to explore the model and live NASA data.
+
+---
+
+## 🚀 Interactive Web Application
+
+This repository includes a web app (`app.py`) built with Streamlit. It provides two main features:
+
+1.  **🛰️ Live Threat Monitor:** Connects to NASA's CNEOS API to display a real-time dashboard of upcoming asteroid close approaches (within the next 60 days).
+2.  **🔬 AI Risk Simulator:** Allows you to interact directly with our trained Random Forest model. You can adjust the 6 key orbital parameters (like `H` and `moid`) to see how the model classifies the risk in real-time.
+
+![App Screenshot - Threat Monitor](results/figures/app_monitor.png)
+![App Screenshot - AI Simulator](results/figures/app_simulator.png)
+
+---
+
+## 💻 Installation and Running the App
+
+This project uses `Python 3.10`, and a virtual environment is recommended.
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/](https://github.com/)[YOUR_USERNAME]/[YOUR_PROJECT_NAME].git
+    cd [YOUR_PROJECT_NAME]
+    ```
+
+2.  **Create and activate a virtual environment:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+    ```
+
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Run the Streamlit App:**
+    ```bash
+    streamlit run app.py
+    ```
 
 ---
 
@@ -12,7 +55,7 @@ This project uses a **Random Forest** Machine Learning model to classify asteroi
 
 The goal of this project was threefold:
 1.  **AI:** Implement a Scikit-learn `RandomForestClassifier` on a real-world classification problem.
-2.  **Portfolio:** Build an end-to-end data science project following best practices (GitFlow, directory structure, separate notebooks).
+2.  **Portfolio:** Build an end-to-end data science project, from notebook to a live web application.
 3.  **Science:** Not only predict PHA status but also **understand what defines the risk**.
 
 ### 1. Model Performance: 99.86% Accuracy
@@ -37,30 +80,9 @@ The model didn't just learn to *classify*; it learned to *evaluate risk* based o
 
 ---
 
-## 💻 Installation and Usage
-
-This project uses `Python 3.10`, and a virtual environment is recommended.
-
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/](https://github.com/)[YOUR_USERNAME]/[YOUR_PROJECT_NAME].git
-    cd [YOUR_PROJECT_NAME]
-    ```
-
-2.  **Create and activate a virtual environment:**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows: .\venv\Scripts\activate
-    ```
-
-3.  **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
 ### 🚀 Model Usage (Inputs)
 
-The trained model (`rf_pha_classifier.joblib`) is ready to make predictions. To use it (via a script, API, or the `app.py` Streamlit app), you must provide the following **6 features**:
+The trained model (`rf_pha_classifier.joblib`) is ready to make predictions. To use it (via the `app.py` Streamlit app), you must provide the following **6 features**:
 
 * **`H`** (Absolute Magnitude): *Proxy for the object's size.*
 * **`e`** (Eccentricity): *The shape of the orbit (0=perfect circle).*
@@ -96,12 +118,14 @@ The project is divided into three sequential notebooks located in the `/notebook
 ---
 
 ## 🗂️ Repository Structure
+
 ```bash
 astro-classifier-rf/
 |
 +-- .gitignore
 +-- LICENSE
 +-- README.md
++-- app.py                  
 +-- requirements.txt
 |
 +-- data/
@@ -118,15 +142,11 @@ astro-classifier-rf/
 +-- results/
     +-- figures/
     |   +-- 01_class_distribution.png
-    |   +-- 02_h_moid_distributions.png
-    |   +-- 03_correlation_heatmap.png
-    |   +-- 04_confusion_matrix.png
-    |   \-- 05_feature_importance.png
+    |   +-- ... (other plots) ...
+    |   +-- 05_feature_importance.png
+    |   \-- app_monitor.png 
     \-- models/
         \-- rf_pha_classifier.joblib
-```
----
-
+````
 ## 📄 License
-
 This project is released under the MIT License.
